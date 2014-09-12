@@ -11,7 +11,13 @@ add_action( 'wp_logout','wp_logout__redirectToHTTP', 1 );
 function wp_logout__redirectToHTTP()
 {
 
-	wp_redirect( 'http://blogs.ubc.ca/' );
+	if( is_multisite() ){
+		$redirect = ( defined( 'BLOGID_CURRENT_SITE' ) ) ? get_home_url( BLOGID_CURRENT_SITE, '/', 'http' ) : get_home_url( 1, '/', 'http' );
+	}else{
+		$redirect = get_home_url( null, '/', 'http' );
+	}
+
+	wp_redirect( $redirect );
 	exit();
 
 }/* wp_logout__redirectToHTTP() */
